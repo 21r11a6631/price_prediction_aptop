@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            max-width: 1000px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .left {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .left img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .right {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h1 {
+            color: #333;
+            margin: 20px 0;
+            text-align: center;
+        }
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fff; /* Set background color to white */
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <img src="{{ url_for('static', filename='img_2.png') }}" alt="Input Image 2">
+            <img src="{{ url_for('static', filename='img_3.png') }}" alt="Input Image 3">
+            <img src="{{ url_for('static', filename='img_4.png') }}" alt="Input Image 4">
+            <img src="{{ url_for('static', filename='img_5.png') }}" alt="Input Image 5">
+        </div>
+        <div class="right">
+            <h1>Laptop Predictor</h1>
+            {% if predicted_price %}
+            <h2>The predicted price of the laptop is ${{ predicted_price }}</h2>
+            <img src="{{ url_for('static', filename='img.png') }}" alt="Output Image">
+            {% else %}
+             <form action="/predict" method="post">
+                 <label for="ab">abc:</label>
+                <select name="ab" id="ab">
+                    {% for company in companies %}
+                    <option value="{{ company }}">{{ company }}</option>
+                    {% endfor %}
+                </select>
+                 <label for="cd">cde:</label>
+                <select name="cd" id="cd">
+                    {% for company in companies %}
+                    <option value="{{ company }}">{{ company }}</option>
+                    {% endfor %}
+                </select>
+                <label for="company">Brand:</label>
+                <select name="company" id="company">
+                    {% for company in companies %}
+                    <option value="{{ company }}">{{ company }}</option>
+                    {% endfor %}
+                </select>
+                <label for="type">Type:</label>
+                <select name="type" id="type">
+                    {% for type in types %}
+                    <option value="{{ type }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+                <label for="ram">RAM (in GB):</label>
+                <input type="number" name="ram" id="ram" min="2" max="64" value="8">
+                <label for="weight">Weight:</label>
+                <input type="number" name="weight" id="weight" min="0" step="0.1" value="2.0">
+                <label for="touchscreen">Touchscreen:</label>
+                <select name="touchscreen" id="touchscreen">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <label for="ips">IPS:</label>
+                <select name="ips" id="ips">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <label for="screen_size">Screen Size:</label>
+                <input type="number" name="screen_size" id="screen_size" min="10" max="20" step="0.1" value="15.6">
+                <label for="resolution">Screen Resolution:</label>
+                <select name="resolution" id="resolution">
+                    <option value="1920x1080">1920x1080</option>
+                    <option value="1366x768">1366x768</option>
+                    <option value="1600x900">1600x900</option>
+                    <option value="3840x2160">3840x2160</option>
+                    <option value="3200x1800">3200x1800</option>
+                    <option value="2880x1800">2880x1800</option>
+                    <option value="2560x1600">2560x1600</option>
+                    <option value="2560x1440">2560x1440</option>
+                    <option value="2304x1440">2304x1440</option>
+                </select>
+                <label for="cpu">CPU:</label>
+                <select name="cpu" id="cpu">
+                    {% for cpu in cpus %}
+                    <option value="{{ cpu }}">{{ cpu }}</option>
+                    {% endfor %}
+                </select>
+                <label for="hdd">HDD (in GB):</label>
+                <select name="hdd" id="hdd">
+                    <option value="0">0</option>
+                    <option value="128">128</option>
+                    <option value="256">256</option>
+                    <option value="512">512</option>
+                    <option value="1024">1024</option>
+                    <option value="2048">2048</option>
+                </select>
+                <label for="ssd">SSD (in TB):</label>
+                <select name="ssd" id="ssd">
+                    <option value="0">0</option>
+                    <option value="8">8</option>
+                    <option value="128">128</option>
+                    <option value="256">256</option>
+                    <option value="512">512</option>
+                    <option value="1024">1024</option>
+                </select>
+                <label for="gpu">GPU:</label>
+                <select name="gpu" id="gpu">
+                    {% for gpu in gpus %}
+                    <option value="{{ gpu }}">{{ gpu }}</option>
+                    {% endfor %}
+                </select>
+                <label for="os">OS:</label>
+                <select name="os" id="os">
+                    {% for os in os %}
+                    <option value="{{ os }}">{{ os }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Predict Price</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
