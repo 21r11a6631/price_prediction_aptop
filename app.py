@@ -55,5 +55,7 @@ def predict():
         return render_template('index.html', predicted_price=predicted_price, companies=data['Company'].unique(), types=data['TypeName'].unique(),
                                cpus=data['cpu brand'].unique(), gpus=data['Gpu brand'].unique(), os=data['os'].unique())
         return render_template('index.html')
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
